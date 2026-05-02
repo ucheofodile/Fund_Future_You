@@ -183,8 +183,8 @@ body { background: white; }
         <th class="accent" id="annual-label">Annual</th>
       </tr></thead>
       <tbody>
-        <tr><td id="i1l">Salary (after tax)</td><td><input type="number" class="num-input" id="i1m" oninput="calc()"></td><td><input type="number" class="num-input" id="i1a" oninput="calc()"></td></tr>
-        <tr class="stripe"><td id="i2l">Other income (side work, allowances, etc.)</td><td><input type="number" class="num-input" id="i2m" oninput="calc()"></td><td><input type="number" class="num-input" id="i2a" oninput="calc()"></td></tr>
+        <tr><td id="i1l">Salary (after tax)</td><td><input type="number" class="num-input" id="i1m" oninput="calc()" onblur="annualise('i1m','i1a')"></td><td><input type="number" class="num-input" id="i1a" oninput="calc()"></td></tr>
+        <tr class="stripe"><td id="i2l">Other income (side work, allowances, etc.)</td><td><input type="number" class="num-input" id="i2m" oninput="calc()" onblur="annualise('i2m','i2a')"></td><td><input type="number" class="num-input" id="i2a" oninput="calc()"></td></tr>
         <tr class="total-row"><td class="dark" id="total-income-label">TOTAL INCOME</td><td class="dark center" id="ti-m"></td><td class="dark center" id="ti-a"></td></tr>
       </tbody>
     </table>
@@ -195,9 +195,9 @@ body { background: white; }
         <th class="accent" id="annual-label2">Annual</th>
       </tr></thead>
       <tbody>
-        <tr><td id="e1l">Fixed (rent, loan repayments, school fees)</td><td><input type="number" class="num-input" id="e1m" oninput="calc()"></td><td><input type="number" class="num-input" id="e1a" oninput="calc()"></td></tr>
-        <tr class="stripe"><td id="e2l">Variable (food, transport, data, subscriptions)</td><td><input type="number" class="num-input" id="e2m" oninput="calc()"></td><td><input type="number" class="num-input" id="e2a" oninput="calc()"></td></tr>
-        <tr><td id="e3l">Discretionary (clothes, eating out, entertainment)</td><td><input type="number" class="num-input" id="e3m" oninput="calc()"></td><td><input type="number" class="num-input" id="e3a" oninput="calc()"></td></tr>
+        <tr><td id="e1l">Fixed (rent, loan repayments, school fees)</td><td><input type="number" class="num-input" id="e1m" oninput="calc()" onblur="annualise('e1m','e1a')"></td><td><input type="number" class="num-input" id="e1a" oninput="calc()"></td></tr>
+        <tr class="stripe"><td id="e2l">Variable (food, transport, data, subscriptions)</td><td><input type="number" class="num-input" id="e2m" oninput="calc()" onblur="annualise('e2m','e2a')"></td><td><input type="number" class="num-input" id="e2a" oninput="calc()"></td></tr>
+        <tr><td id="e3l">Discretionary (clothes, eating out, entertainment)</td><td><input type="number" class="num-input" id="e3m" oninput="calc()" onblur="annualise('e3m','e3a')"></td><td><input type="number" class="num-input" id="e3a" oninput="calc()"></td></tr>
         <tr class="stripe"><td id="e4l">Annual surprises (insurance, school levies, travel)</td><td class="dash">—</td><td><input type="number" class="num-input" id="e4a" oninput="calc()"></td></tr>
         <tr class="total-row"><td class="dark" id="total-expense-label">TOTAL EXPENSES</td><td class="dark center" id="te-m"></td><td class="dark center" id="te-a"></td></tr>
         <tr id="surplus-row"><td class="dark" id="surplus-label">SURPLUS / GAP<div style="font-weight:400;font-size:11px;color:#888;" id="surplus-note">Income minus Expenses</div></td><td id="surp-m"></td><td id="surp-a"></td></tr>
@@ -328,7 +328,7 @@ var text = {
     printBtn: "Save / Print",
     adviceSurplus: "You have room. Move this surplus into your Future Third before you find a reason to spend it.",
     adviceBreakeven: "You're at zero. Find one expense to reduce and redirect it to your Future Third.",
-    adviceGap: "Your expenses exceed your income. Cut one thing or find one new income source. Both are valid."
+    adviceGap: "Your expenses exceed your income. Look at what you can cut, and whether you need another income source."
   },
   fr: {
     title: "Finance ton futur",
@@ -391,7 +391,7 @@ var text = {
     printBtn: "Enregistrer / Imprimer",
     adviceSurplus: "Tu as de la marge. Transfère cet excédent dans ton Tiers Futur avant de trouver une raison de le dépenser.",
     adviceBreakeven: "Tu es à zéro. Trouve une dépense à réduire et redirige-la vers ton Tiers Futur.",
-    adviceGap: "Tes dépenses dépassent tes revenus. Coupe une dépense ou trouve une nouvelle source de revenus. Les deux sont valables."
+    adviceGap: "Tes dépenses dépassent tes revenus. Regarde ce que tu peux réduire, et si tu as besoin d'une nouvelle source de revenus."
   }
 };
 
@@ -458,23 +458,20 @@ function fmtS(n, hasData) {
   return (n >= 0 ? '+' : '') + n.toLocaleString();
 }
 
+function annualise(mId, aId) {
+  var mVal = getVal(mId);
+  var aEl = document.getElementById(aId);
+  if(mVal > 0 && aEl.value === '') {
+    aEl.value = (mVal * 12).toString();
+    calc();
+  }
+}
+
 function calc() {
   var i1m = getVal('i1m'); var i2m = getVal('i2m');
   var i1a = getVal('i1a'); var i2a = getVal('i2a');
   var e1m = getVal('e1m'); var e2m = getVal('e2m'); var e3m = getVal('e3m');
   var e1a = getVal('e1a'); var e2a = getVal('e2a'); var e3a = getVal('e3a'); var e4a = getVal('e4a');
-
-  // Auto-annualise: if monthly entered but annual empty, populate annual x12
-  function autoAnnual(mId, aId, mVal) {
-    var aEl = document.getElementById(aId);
-    if(mVal > 0 && aEl.value === '') { aEl.value = (mVal * 12).toString(); }
-  }
-  autoAnnual('i1m','i1a',i1m); autoAnnual('i2m','i2a',i2m);
-  autoAnnual('e1m','e1a',e1m); autoAnnual('e2m','e2a',e2m); autoAnnual('e3m','e3a',e3m);
-
-  // Recalculate after potential auto-fill
-  i1a = getVal('i1a'); i2a = getVal('i2a');
-  e1a = getVal('e1a'); e2a = getVal('e2a'); e3a = getVal('e3a');
 
   var im = i1m + i2m;
   var ia = i1a + i2a;
