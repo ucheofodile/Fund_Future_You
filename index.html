@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -8,443 +5,483 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fund Future You — The Money Framework</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Georgia, serif; background: #F7F5F2; color: #1A1A1A; }
-  input[type=number]::-webkit-inner-spin-button,
-  input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-  input[type=number] { -moz-appearance: textfield; }
-  @media print {
-    button { display: none !important; }
-    body { background: white; }
-  }
-  @media (max-width: 600px) {
-    .grid-3 { grid-template-columns: 1fr !important; }
-    .hide-mobile { display: none !important; }
-  }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Georgia, serif; background: #F7F5F2; color: #1A1A1A; }
+input { font-family: Georgia, serif; }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type=number] { -moz-appearance: textfield; }
+
+.header { background: #1A1A1A; padding: 24px 28px 20px; border-bottom: 3px solid #C8956C; }
+.header-inner { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.brand { font-family: sans-serif; font-size: 10px; letter-spacing: 3px; color: #C8956C; text-transform: uppercase; margin-bottom: 6px; }
+.title { font-size: 24px; color: white; font-weight: normal; font-style: italic; margin-bottom: 4px; }
+.subtitle { font-family: sans-serif; font-size: 12px; color: #A8A8A8; }
+.tagline { font-family: sans-serif; font-size: 12px; color: #C8956C; margin-top: 6px; font-style: italic; }
+.lang-btn { font-family: sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 6px 14px; background: transparent; border: 1px solid #C8956C; color: #C8956C; cursor: pointer; border-radius: 3px; white-space: nowrap; flex-shrink: 0; }
+
+.prompt-bar { background: #EDEBE7; padding: 14px 28px; border-bottom: 1px solid #E0D5CC; }
+.prompt-text { font-size: 14px; color: #1A1A1A; font-style: italic; line-height: 1.6; }
+
+.content { padding: 24px 28px; max-width: 760px; margin: 0 auto; }
+
+.section-num { font-family: sans-serif; font-size: 10px; letter-spacing: 3px; color: #C8956C; margin-bottom: 4px; }
+.section-title { font-family: sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #C8956C; border-bottom: 1px solid #E0D5CC; padding-bottom: 6px; margin-bottom: 12px; }
+.section-intro { font-size: 13px; color: #444; line-height: 1.6; margin-bottom: 12px; }
+
+.callout { border-left: 3px solid #C8956C; background: #F5EDE4; padding: 12px 16px; margin: 12px 0; font-size: 13px; line-height: 1.7; color: #1A1A1A; font-style: italic; }
+.footer-note { font-size: 12px; color: #888; font-style: italic; text-align: center; margin: 8px 0 28px; }
+
+table { width: 100%; border-collapse: collapse; margin-bottom: 4px; }
+th { background: #1A1A1A; color: white; font-family: sans-serif; font-size: 11px; font-weight: 700; padding: 8px 10px; text-align: center; }
+th.accent { background: #C8956C; }
+th.left { text-align: left; }
+td { padding: 8px 10px; font-size: 13px; color: #444; border-bottom: 1px solid #E0D5CC; vertical-align: top; }
+td.dark { color: #1A1A1A; font-weight: 700; }
+td.light-bg { background: #FDF8F4; color: #1A1A1A; }
+td.center { text-align: center; }
+tr.stripe { background: #FAF5F0; }
+tr.total-row { background: #F0EBE5; }
+tr.surplus-pos { background: #F0F5F2; }
+tr.surplus-neg { background: #FFF0F0; }
+
+.num-input { width: 100%; border: 1px solid #E0D5CC; border-radius: 3px; padding: 5px 8px; font-size: 13px; color: #1A1A1A; outline: none; }
+.text-input { width: 100%; border: 1px solid #E0D5CC; border-radius: 3px; padding: 5px 8px; font-size: 13px; color: #1A1A1A; outline: none; font-family: Georgia, serif; }
+
+.sabbatical-box { background: #FDF8F4; border: 1px solid #E0D5CC; border-radius: 4px; padding: 12px 16px; margin-bottom: 8px; }
+.sabbatical-label { font-family: sans-serif; font-size: 11px; font-weight: 700; color: #C8956C; margin-bottom: 8px; }
+.sab-inputs { display: flex; gap: 12px; flex-wrap: wrap; }
+.sab-input { flex: 1; min-width: 140px; }
+
+.automate-box { background: #FDF8F4; border: 1px solid #E0D5CC; border-radius: 4px; overflow: hidden; margin-bottom: 28px; }
+.automate-row { display: flex; gap: 16px; padding: 10px 16px; border-bottom: 1px solid #E0D5CC; }
+.automate-row:last-child { border-bottom: none; }
+.automate-row.white { background: white; }
+.automate-label { font-family: sans-serif; font-size: 12px; font-weight: 700; color: #1A1A1A; min-width: 110px; }
+.automate-val { font-size: 13px; color: #444; }
+
+.mindset-grid { border: 1px solid #E0D5CC; border-radius: 4px; overflow: hidden; margin-bottom: 28px; }
+.mindset-header { display: grid; grid-template-columns: 1fr 1fr 40px; background: #1A1A1A; }
+.mindset-header-cell { padding: 8px 12px; font-family: sans-serif; font-size: 11px; font-weight: 700; color: white; }
+.mindset-row { display: grid; grid-template-columns: 1fr 1fr 40px; border-top: 1px solid #E0D5CC; }
+.mindset-row.stripe { background: #FAF5F0; }
+.mindset-from { padding: 10px 12px; font-size: 12px; color: #888; font-style: italic; line-height: 1.5; }
+.mindset-to { padding: 10px 12px; font-size: 12px; color: #2A5C3F; font-weight: 700; line-height: 1.5; }
+.mindset-check { padding: 10px 12px; display: flex; align-items: center; justify-content: center; }
+.mindset-check input { width: 16px; height: 16px; accent-color: #C8956C; cursor: pointer; }
+
+.circle-grid { border: 1px solid #E0D5CC; border-radius: 4px; overflow: hidden; margin-bottom: 32px; }
+.circle-header { display: grid; grid-template-columns: 1fr 2fr; background: #1A1A1A; }
+.circle-header-cell { padding: 8px 12px; font-family: sans-serif; font-size: 11px; font-weight: 700; color: white; }
+.circle-row { display: grid; grid-template-columns: 1fr 2fr; border-top: 1px solid #E0D5CC; }
+.circle-row.stripe { background: #FAF5F0; }
+.circle-who { padding: 10px 12px; font-size: 12px; font-weight: 700; color: #1A1A1A; }
+.circle-what { padding: 10px 12px; font-size: 12px; color: #444; }
+
+.page-footer { border-top: 1px solid #E0D5CC; padding-top: 16px; margin-bottom: 20px; text-align: center; }
+.footer-quote { font-size: 15px; font-style: italic; color: #1A1A1A; margin-bottom: 8px; }
+.footer-credit { font-family: sans-serif; font-size: 11px; color: #888; }
+
+.print-btn { display: block; margin: 0 auto 40px; font-family: sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; padding: 12px 32px; background: #C8956C; border: none; color: white; cursor: pointer; border-radius: 3px; }
+
+.surplus-pos-text { color: #2A5C3F; font-weight: 700; font-size: 15px; text-align: center; }
+.surplus-neg-text { color: #C0392B; font-weight: 700; font-size: 15px; text-align: center; }
+
+.dash { text-align: center; color: #888; }
+
+@media print {
+.lang-btn, .print-btn { display: none !important; }
+body { background: white; }
+}
+@media (max-width: 600px) {
+.content { padding: 16px; }
+.header { padding: 16px; }
+.sab-inputs { flex-direction: column; }
+}
 </style>
+
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
 
-const ACCENT = “#C8956C”;
-const DARK = “#1A1A1A”;
-const MID = “#444444”;
-const SOFT = “#888888”;
-const LIGHT = “#FDF8F4”;
-const CALLOUT = “#F5EDE4”;
-const GREEN = “#2A5C3F”;
-const RULE = “#E0D5CC”;
+<div class="header">
+  <div class="header-inner">
+    <div>
+      <div class="brand">The Smile Collective</div>
+      <div class="title" id="title">Fund Future You</div>
+      <div class="subtitle" id="subtitle">The Money Framework</div>
+      <div class="tagline" id="tagline">You're not bad with money. You're built to protect it.</div>
+    </div>
+    <button class="lang-btn" onclick="toggleLang()" id="lang-btn">FR</button>
+  </div>
+</div>
 
-const content = {
-en: {
-title: “Fund Future You”,
-subtitle: “The Money Framework”,
-tagline: “You’re not bad with money. You’re built to protect it.”,
-prompt: “Picture the version of you five years from now. What does her life look like? Everything below is about funding her.”,
-langBtn: “FR”,
-thirds: {
-num: “01”, title: “THE THREE THIRDS RULE”,
-intro: “Every time money comes in, divide it into three equal parts before you spend a single naira or dollar.”,
-headers: [“THE ESSENTIALS THIRD”, “THE SECURITY THIRD”, “THE FUTURE THIRD”],
-rows: [
-[“Day-to-day expenses”, “Security & flex spending”, “Savings — do not touch”],
-[“Transport, food, rent, utilities, subscriptions”, “Gifts, emergencies, unexpected costs, small treats”, “This is future you. Automate it. Forget it. Let it grow.”],
-],
-callout: “The Emotional Economy: The Security Third is also where the invisible costs live — the cough syrup, the birthday gift, the small thing nobody asked for but somebody needed. These costs are real. They belong here. Spending on them is not waste. It is care — funded properly.”,
-footer: “Live your entire life on the Essentials Third. If you need it, the Security Third is there — not the Future Third.”,
-},
-portfolios: {
-num: “02”, title: “SPLIT YOUR SAVINGS INTO THREE PORTFOLIOS”,
-intro: “The Future Third is not one account. Split it into three buckets based on your goals and risk appetite.”,
-headers: [“PORTFOLIO”, “PURPOSE”, “EXAMPLES”, “RISK”],
-rows: [
-[“Goal Savings”, “Something specific you’re working towards”, “House deposit, sabbatical fund, holiday, career break”, “Low”],
-[“Stable Growth”, “Steady, low-risk growth over time”, “T-bills, fixed deposits, bond funds”, “Low–Med”],
-[“High Growth”, “Bigger potential return; you can afford to lose this”, “Stocks, equity funds, high-yield instruments”, “Higher”],
-],
-sabbatical: “The Sabbatical Fund: A career break is not an accident. It is a decision you fund in advance. Put it in Goal Savings by name. Give it a target amount. Give it a date. That is when it becomes real.”,
-sabbaticalLabel: “My sabbatical goal:”,
-amountPlaceholder: “Target amount”,
-datePlaceholder: “Target date”,
-footer: “Start with Goal Savings and Stable Growth. Add High Growth when you’re ready.”,
-},
-numbers: {
-num: “03”, title: “KNOW YOUR NUMBERS”,
-intro: “You can’t manage what you refuse to face. Do this exercise once. Update it quarterly.”,
-incomeLabel: “INCOME”, expenseLabel: “EXPENSES”,
-surplusLabel: “SURPLUS / GAP”, surplusNote: “Income minus Expenses”,
-monthly: “Monthly”, annual: “Annual”,
-incomeFields: [“Salary (after tax)”, “Other income (side work, allowances, etc.)”],
-expenseFields: [
-{ label: “Fixed (rent, loan repayments, school fees)”, annualOnly: false },
-{ label: “Variable (food, transport, data, subscriptions)”, annualOnly: false },
-{ label: “Discretionary (clothes, eating out, entertainment)”, annualOnly: false },
-{ label: “Annual surprises (insurance, school levies, travel)”, annualOnly: true },
-],
-footer: “Annual surprises are not surprises if you plan for them. Divide the annual amount by 12 and add it to your monthly Essentials Third.”,
-lateStarter: “Starting later? The Three Thirds still works. If you feel you need to catch up, you may want to increase what you allocate to future-you — even if that means trimming the Security Third for a season. The habit of paying yourself first matters more than the percentage. Start where you are.”,
-},
-automate: {
-num: “04”, title: “AUTOMATE EVERYTHING”,
-intro: “Set up automatic transfers on payday — before you see the money.”,
-rows: [
-[“Payday”, “→ Savings transfer fires automatically”],
-[“Payday”, “→ Investment contribution fires automatically”],
-[“What remains”, “→ That is your spending money. Work within it.”],
-],
-},
-mindset: {
-num: “05”, title: “THE MINDSET SHIFT”,
-fromLabel: “INSTEAD OF THIS”, toLabel: “TRY THIS”,
-rows: [
-{ from: ‘“I'll save what's left at the end of the month.”’, to: ‘“I pay myself first. Savings come out on payday.”’ },
-{ from: ‘“I might lose the money.”’, to: ‘“What if I win? What does that make possible?”’ },
-{ from: ‘“I'll wait until I earn more.”’, to: ‘“I start now with what I have. It compounds.”’ },
-{ from: ‘“My partner handles the finances.”’, to: ‘“I own my financial decisions. Always.”’ },
-{ from: ‘“It's selfish to prioritize my money.”’, to: ‘“My financial security is security for everyone around me.”’ },
-],
-},
-circle: {
-num: “06”, title: “BUILD YOUR FINANCIAL CIRCLE”,
-intro: “This framework is a solo exercise. But financial growth rarely happens alone.”,
-whoLabel: “WHO”, whatLabel: “WHAT THEY GIVE YOU”,
-rows: [
-{ who: “A financial advisor”, what: “Professional guidance on products, tax, and portfolio structure” },
-{ who: “A trusted peer investor”, what: “Real-world experience — what is actually working for someone like you” },
-{ who: “An investment club”, what: “Accountability, shared research, and the habit of regular action” },
-{ who: “A frank friend”, what: “Permission to ask the questions you are embarrassed to ask elsewhere” },
-],
-},
-footer: “Start where you are. But start.”,
-credit: “Uche Ofodile · Don’t Let The Smile Fool You”,
-printBtn: “Save / Print”,
-},
-fr: {
-title: “Finance ton futur”,
-subtitle: “Le Cadre Financier”,
-tagline: “Tu n’es pas mauvaise avec l’argent. Tu le protèges.”,
-prompt: “Imagine la version de toi-même dans cinq ans. À quoi ressemble sa vie ? Tout ce qui suit, c’est pour elle.”,
-langBtn: “EN”,
-thirds: {
-num: “01”, title: “LA RÈGLE DES TROIS TIERS”,
-intro: “Dès que l’argent arrive, divise-le en trois parts égales avant de dépenser le moindre centime.”,
-headers: [“LE TIERS ESSENTIEL”, “LE TIERS DE SÉCURITÉ”, “LE TIERS FUTUR”],
-rows: [
-[“Dépenses courantes”, “Sécurité et flexibilité”, “Épargne — ne pas toucher”],
-[“Transport, nourriture, loyer, factures, abonnements”, “Cadeaux, imprévus, dépenses occasionnelles, petits plaisirs”, “C’est toi, demain. Automatise. Oublie. Laisse-le fructifier.”],
-],
-callout: “L’économie émotionnelle : Le Tiers de Sécurité, c’est aussi là où vivent les coûts invisibles — le sirop pour la toux, le cadeau d’anniversaire, la petite chose que personne n’a demandée mais dont quelqu’un avait besoin. Ces coûts sont réels. Ils ont leur place ici. Y dépenser n’est pas du gaspillage. C’est prendre soin — et le financer correctement.”,
-footer: “Vis entièrement sur le Tiers Essentiel. En cas de besoin, utilise le Tiers de Sécurité — jamais le Tiers Futur.”,
-},
-portfolios: {
-num: “02”, title: “RÉPARTIS TON ÉPARGNE EN TROIS PORTEFEUILLES”,
-intro: “Le Tiers Futur n’est pas un seul compte. Divise-le en trois selon tes objectifs et ta tolérance au risque.”,
-headers: [“PORTEFEUILLE”, “OBJECTIF”, “EXEMPLES”, “RISQUE”],
-rows: [
-[“Épargne Objectif”, “Quelque chose de précis que tu vises”, “Apport immobilier, fonds sabbatique, voyage, congé”, “Faible”],
-[“Croissance Stable”, “Rendement régulier et peu risqué”, “Bons du Trésor, dépôts à terme, fonds obligataires”, “Faible–Moyen”],
-[“Forte Croissance”, “Rendement potentiel élevé ; tu peux te permettre de perdre cet argent”, “Actions, fonds actions, produits à haut rendement”, “Élevé”],
-],
-sabbatical: “Le Fonds Sabbatique : Un congé de carrière n’est pas un accident. C’est une décision que tu finances à l’avance. Inscris-le dans l’Épargne Objectif, par son nom. Donne-lui un montant cible. Donne-lui une date. C’est à ce moment-là qu’il devient réel.”,
-sabbaticalLabel: “Mon objectif sabbatique :”,
-amountPlaceholder: “Montant cible”,
-datePlaceholder: “Date cible”,
-footer: “Commence par l’Épargne Objectif et la Croissance Stable. Ajoute la Forte Croissance quand tu es prête.”,
-},
-numbers: {
-num: “03”, title: “CONNAIS TES CHIFFRES”,
-intro: “On ne gère pas ce qu’on refuse de regarder en face. Fais cet exercice une fois. Mets-le à jour chaque trimestre.”,
-incomeLabel: “REVENUS”, expenseLabel: “DÉPENSES”,
-surplusLabel: “SOLDE / ÉCART”, surplusNote: “Revenus moins dépenses”,
-monthly: “Mensuel”, annual: “Annuel”,
-incomeFields: [“Salaire (après impôts)”, “Autres revenus (activité complémentaire, allocations…)”],
-expenseFields: [
-{ label: “Fixes (loyer, remboursements, frais de scolarité)”, annualOnly: false },
-{ label: “Variables (nourriture, transport, données, abonnements)”, annualOnly: false },
-{ label: “Discrétionnaires (vêtements, restaurants, loisirs)”, annualOnly: false },
-{ label: “Dépenses annuelles (assurance, frais scolaires, voyage)”, annualOnly: true },
-],
-footer: “Les dépenses annuelles ne sont pas des surprises si tu les planifies. Divise le montant annuel par 12 et intègre-le à ton Tiers Essentiel mensuel.”,
-lateStarter: “Tu commences plus tard ? La Règle des Trois Tiers fonctionne quand même. Si tu sens que tu dois rattraper le temps perdu, tu pourrais vouloir augmenter ce que tu alloues à ton futur-toi — même si cela signifie réduire le Tiers de Sécurité pour un temps. L’habitude de te payer en priorité compte plus que le pourcentage. Commence là où tu es.”,
-},
-automate: {
-num: “04”, title: “AUTOMATISE TOUT”,
-intro: “Mets en place des virements automatiques le jour de paie, avant de voir l’argent.”,
-rows: [
-[“Jour de paie”, “→ Virement épargne se déclenche automatiquement”],
-[“Jour de paie”, “→ Contribution investissement se déclenche automatiquement”],
-[“Ce qui reste”, “→ C’est ton argent de dépenses. Vis avec.”],
-],
-},
-mindset: {
-num: “05”, title: “LE CHANGEMENT DE MENTALITÉ”,
-fromLabel: “AU LIEU DE ÇA”, toLabel: “ESSAIE ÇA”,
-rows: [
-{ from: ‘“Je mettrai de côté ce qui reste à la fin du mois.”’, to: ‘“Je me paie en premier. L'épargne part le jour de paie.”’ },
-{ from: ‘“Je pourrais perdre cet argent.”’, to: ‘“Et si je gagnais ? Qu'est-ce que ça rendrait possible ?”’ },
-{ from: ‘“J'attendrai de gagner plus.”’, to: ‘“Je commence maintenant avec ce que j'ai. Avec le temps, ça grandit.”’ },
-{ from: ‘“Mon partenaire gère les finances.”’, to: ‘“Je prends mes propres décisions financières. Toujours.”’ },
-{ from: ‘“C'est égoïste de prioriser mon argent.”’, to: ‘“Ma sécurité financière, c'est la sécurité de tous autour de moi.”’ },
-],
-},
-circle: {
-num: “06”, title: “CONSTRUIS TON CERCLE FINANCIER”,
-intro: “Ce cadre est un exercice individuel. Mais la croissance financière se fait rarement seule.”,
-whoLabel: “QUI”, whatLabel: “CE QU’ILS T’APPORTENT”,
-rows: [
-{ who: “Un conseiller financier”, what: “Accompagnement professionnel sur les produits, la fiscalité et la structure du portefeuille” },
-{ who: “Une personne de confiance qui investit”, what: “Expérience concrète — ce qui fonctionne vraiment pour quelqu’un comme toi” },
-{ who: “Un club d’investissement”, what: “Responsabilité, recherche partagée et l’habitude d’agir régulièrement” },
-{ who: “Une amie franche”, what: “La permission de poser les questions que tu n’oses pas poser ailleurs” },
-],
-},
-footer: “Commence là où tu es. Mais commence.”,
-credit: “Uche Ofodile · Don’t Let The Smile Fool You”,
-printBtn: “Enregistrer / Imprimer”,
-},
+<div class="prompt-bar">
+  <div class="prompt-text" id="prompt">Picture the version of you five years from now. What does her life look like? Everything below is about funding her.</div>
+</div>
+
+<div class="content">
+
+  <!-- SECTION 1 -->
+
+  <div class="section-num">01</div>
+  <div class="section-title" id="s1-title">THE THREE THIRDS RULE</div>
+  <div class="section-intro" id="s1-intro">Every time money comes in, divide it into three equal parts before you spend a single naira or dollar.</div>
+  <div style="overflow-x:auto;margin-bottom:4px;">
+    <table>
+      <thead><tr>
+        <th class="accent" id="h1">THE ESSENTIALS THIRD</th>
+        <th class="accent" id="h2">THE SECURITY THIRD</th>
+        <th style="background:#2A2A2A;" id="h3">THE FUTURE THIRD</th>
+      </tr></thead>
+      <tbody>
+        <tr><td id="r1c1">Day-to-day expenses</td><td id="r1c2">Security &amp; flex spending</td><td class="light-bg" id="r1c3">Savings — do not touch</td></tr>
+        <tr class="stripe"><td id="r2c1">Transport, food, rent, utilities, subscriptions</td><td id="r2c2">Gifts, emergencies, unexpected costs, small treats</td><td class="light-bg" id="r2c3">This is future you. Automate it. Forget it. Let it grow.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout" id="callout1">The Emotional Economy: The Security Third is also where the invisible costs live — the cough syrup, the birthday gift, the small thing nobody asked for but somebody needed. These costs are real. They belong here. Spending on them is not waste. It is care — funded properly.</div>
+  <div class="footer-note" id="s1-footer">Live your entire life on the Essentials Third. If you need it, the Security Third is there — not the Future Third.</div>
+
+  <!-- SECTION 2 -->
+
+  <div class="section-num">02</div>
+  <div class="section-title" id="s2-title">SPLIT YOUR SAVINGS INTO THREE PORTFOLIOS</div>
+  <div class="section-intro" id="s2-intro">The Future Third is not one account. Split it into three buckets based on your goals and risk appetite.</div>
+  <div style="overflow-x:auto;margin-bottom:4px;">
+    <table>
+      <thead><tr>
+        <th id="ph1">PORTFOLIO</th><th id="ph2">PURPOSE</th><th id="ph3">EXAMPLES</th><th id="ph4">RISK</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="dark" id="p1n">Goal Savings</td><td id="p1p">Something specific you're working towards</td><td id="p1e">House deposit, sabbatical fund, holiday, career break</td><td id="p1r">Low</td></tr>
+        <tr class="stripe"><td class="dark" id="p2n">Stable Growth</td><td id="p2p">Steady, low-risk growth over time</td><td id="p2e">T-bills, fixed deposits, bond funds</td><td id="p2r">Low–Med</td></tr>
+        <tr><td class="dark" id="p3n">High Growth</td><td id="p3p">Bigger potential return; you can afford to lose this</td><td id="p3e">Stocks, equity funds, high-yield instruments</td><td id="p3r">Higher</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout" id="callout2">The Sabbatical Fund: A career break is not an accident. It is a decision you fund in advance. Put it in Goal Savings by name. Give it a target amount. Give it a date. That is when it becomes real.</div>
+  <div class="sabbatical-box">
+    <div class="sabbatical-label" id="sab-label">My sabbatical goal:</div>
+    <div class="sab-inputs">
+      <div class="sab-input"><input type="text" class="text-input" id="sab-amt" placeholder="Target amount"></div>
+      <div class="sab-input"><input type="text" class="text-input" id="sab-date" placeholder="Target date"></div>
+    </div>
+  </div>
+  <div class="footer-note" id="s2-footer">Start with Goal Savings and Stable Growth. Add High Growth when you're ready.</div>
+
+  <!-- SECTION 3 -->
+
+  <div class="section-num">03</div>
+  <div class="section-title" id="s3-title">KNOW YOUR NUMBERS</div>
+  <div class="section-intro" id="s3-intro">You can't manage what you refuse to face. Do this exercise once. Update it quarterly.</div>
+  <div style="overflow-x:auto;">
+    <table style="margin-bottom:8px;">
+      <thead><tr>
+        <th class="accent left" style="width:50%;" id="income-label">INCOME</th>
+        <th class="accent" id="monthly-label">Monthly</th>
+        <th class="accent" id="annual-label">Annual</th>
+      </tr></thead>
+      <tbody>
+        <tr><td id="i1l">Salary (after tax)</td><td><input type="number" class="num-input" id="i1m" oninput="calc()"></td><td><input type="number" class="num-input" id="i1a" oninput="calc()"></td></tr>
+        <tr class="stripe"><td id="i2l">Other income (side work, allowances, etc.)</td><td><input type="number" class="num-input" id="i2m" oninput="calc()"></td><td><input type="number" class="num-input" id="i2a" oninput="calc()"></td></tr>
+        <tr class="total-row"><td class="dark" id="total-income-label">TOTAL INCOME</td><td class="dark center" id="ti-m"></td><td class="dark center" id="ti-a"></td></tr>
+      </tbody>
+    </table>
+    <table style="margin-bottom:8px;">
+      <thead><tr>
+        <th class="accent left" style="width:50%;" id="expense-label">EXPENSES</th>
+        <th class="accent" id="monthly-label2">Monthly</th>
+        <th class="accent" id="annual-label2">Annual</th>
+      </tr></thead>
+      <tbody>
+        <tr><td id="e1l">Fixed (rent, loan repayments, school fees)</td><td><input type="number" class="num-input" id="e1m" oninput="calc()"></td><td><input type="number" class="num-input" id="e1a" oninput="calc()"></td></tr>
+        <tr class="stripe"><td id="e2l">Variable (food, transport, data, subscriptions)</td><td><input type="number" class="num-input" id="e2m" oninput="calc()"></td><td><input type="number" class="num-input" id="e2a" oninput="calc()"></td></tr>
+        <tr><td id="e3l">Discretionary (clothes, eating out, entertainment)</td><td><input type="number" class="num-input" id="e3m" oninput="calc()"></td><td><input type="number" class="num-input" id="e3a" oninput="calc()"></td></tr>
+        <tr class="stripe"><td id="e4l">Annual surprises (insurance, school levies, travel)</td><td class="dash">—</td><td><input type="number" class="num-input" id="e4a" oninput="calc()"></td></tr>
+        <tr class="total-row"><td class="dark" id="total-expense-label">TOTAL EXPENSES</td><td class="dark center" id="te-m"></td><td class="dark center" id="te-a"></td></tr>
+        <tr id="surplus-row"><td class="dark" id="surplus-label">SURPLUS / GAP<div style="font-weight:400;font-size:11px;color:#888;" id="surplus-note">Income minus Expenses</div></td><td id="surp-m"></td><td id="surp-a"></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="footer-note" id="s3-footer">Annual surprises are not surprises if you plan for them. Divide the annual amount by 12 and add it to your monthly Essentials Third.</div>
+  <div class="callout" id="callout3">Starting later? The Three Thirds still works. If you feel you need to catch up, you may want to increase what you allocate to future-you — even if that means trimming the Security Third for a season. The habit of paying yourself first matters more than the percentage. Start where you are.</div>
+  <div style="margin-bottom:28px;"></div>
+
+  <!-- SECTION 4 -->
+
+  <div class="section-num">04</div>
+  <div class="section-title" id="s4-title">AUTOMATE EVERYTHING</div>
+  <div class="section-intro" id="s4-intro">Set up automatic transfers on payday — before you see the money.</div>
+  <div class="automate-box">
+    <div class="automate-row white"><span class="automate-label" id="a1l">Payday</span><span class="automate-val" id="a1v">→ Savings transfer fires automatically</span></div>
+    <div class="automate-row"><span class="automate-label" id="a2l">Payday</span><span class="automate-val" id="a2v">→ Investment contribution fires automatically</span></div>
+    <div class="automate-row white"><span class="automate-label" id="a3l">What remains</span><span class="automate-val" id="a3v">→ That is your spending money. Work within it.</span></div>
+  </div>
+
+  <!-- SECTION 5 -->
+
+  <div class="section-num">05</div>
+  <div class="section-title" id="s5-title">THE MINDSET SHIFT</div>
+  <div class="mindset-grid">
+    <div class="mindset-header">
+      <div class="mindset-header-cell" id="from-label">INSTEAD OF THIS</div>
+      <div class="mindset-header-cell" id="to-label">TRY THIS</div>
+      <div class="mindset-header-cell">✓</div>
+    </div>
+    <div class="mindset-row"><div class="mindset-from" id="m1f">"I'll save what's left at the end of the month."</div><div class="mindset-to" id="m1t">"I pay myself first. Savings come out on payday."</div><div class="mindset-check"><input type="checkbox"></div></div>
+    <div class="mindset-row stripe"><div class="mindset-from" id="m2f">"I might lose the money."</div><div class="mindset-to" id="m2t">"What if I win? What does that make possible?"</div><div class="mindset-check"><input type="checkbox"></div></div>
+    <div class="mindset-row"><div class="mindset-from" id="m3f">"I'll wait until I earn more."</div><div class="mindset-to" id="m3t">"I start now with what I have. It compounds."</div><div class="mindset-check"><input type="checkbox"></div></div>
+    <div class="mindset-row stripe"><div class="mindset-from" id="m4f">"My partner handles the finances."</div><div class="mindset-to" id="m4t">"I own my financial decisions. Always."</div><div class="mindset-check"><input type="checkbox"></div></div>
+    <div class="mindset-row"><div class="mindset-from" id="m5f">"It's selfish to prioritize my money."</div><div class="mindset-to" id="m5t">"My financial security is security for everyone around me."</div><div class="mindset-check"><input type="checkbox"></div></div>
+  </div>
+
+  <!-- SECTION 6 -->
+
+  <div class="section-num">06</div>
+  <div class="section-title" id="s6-title">BUILD YOUR FINANCIAL CIRCLE</div>
+  <div class="section-intro" id="s6-intro">This framework is a solo exercise. But financial growth rarely happens alone.</div>
+  <div class="circle-grid">
+    <div class="circle-header">
+      <div class="circle-header-cell" id="who-label">WHO</div>
+      <div class="circle-header-cell" id="what-label">WHAT THEY GIVE YOU</div>
+    </div>
+    <div class="circle-row"><div class="circle-who" id="c1w">A financial advisor</div><div class="circle-what" id="c1v">Professional guidance on products, tax, and portfolio structure</div></div>
+    <div class="circle-row stripe"><div class="circle-who" id="c2w">A trusted peer investor</div><div class="circle-what" id="c2v">Real-world experience — what is actually working for someone like you</div></div>
+    <div class="circle-row"><div class="circle-who" id="c3w">An investment club</div><div class="circle-what" id="c3v">Accountability, shared research, and the habit of regular action</div></div>
+    <div class="circle-row stripe"><div class="circle-who" id="c4w">A frank friend</div><div class="circle-what" id="c4v">Permission to ask the questions you are embarrassed to ask elsewhere</div></div>
+  </div>
+
+  <!-- FOOTER -->
+
+  <div class="page-footer">
+    <div class="footer-quote" id="footer-quote">Start where you are. But start.</div>
+    <div class="footer-credit">Uche Ofodile · Don't Let The Smile Fool You</div>
+  </div>
+  <button class="print-btn" onclick="window.print()" id="print-btn">Save / Print</button>
+
+</div>
+
+<script>
+var lang = 'en';
+
+var text = {
+  en: {
+    title: "Fund Future You",
+    subtitle: "The Money Framework",
+    tagline: "You're not bad with money. You're built to protect it.",
+    prompt: "Picture the version of you five years from now. What does her life look like? Everything below is about funding her.",
+    langBtn: "FR",
+    s1title: "THE THREE THIRDS RULE",
+    s1intro: "Every time money comes in, divide it into three equal parts before you spend a single naira or dollar.",
+    h1: "THE ESSENTIALS THIRD", h2: "THE SECURITY THIRD", h3: "THE FUTURE THIRD",
+    r1c1: "Day-to-day expenses", r1c2: "Security & flex spending", r1c3: "Savings — do not touch",
+    r2c1: "Transport, food, rent, utilities, subscriptions",
+    r2c2: "Gifts, emergencies, unexpected costs, small treats",
+    r2c3: "This is future you. Automate it. Forget it. Let it grow.",
+    callout1: "The Emotional Economy: The Security Third is also where the invisible costs live — the cough syrup, the birthday gift, the small thing nobody asked for but somebody needed. These costs are real. They belong here. Spending on them is not waste. It is care — funded properly.",
+    s1footer: "Live your entire life on the Essentials Third. If you need it, the Security Third is there — not the Future Third.",
+    s2title: "SPLIT YOUR SAVINGS INTO THREE PORTFOLIOS",
+    s2intro: "The Future Third is not one account. Split it into three buckets based on your goals and risk appetite.",
+    ph1:"PORTFOLIO", ph2:"PURPOSE", ph3:"EXAMPLES", ph4:"RISK",
+    p1n:"Goal Savings", p1p:"Something specific you're working towards", p1e:"House deposit, sabbatical fund, holiday, career break", p1r:"Low",
+    p2n:"Stable Growth", p2p:"Steady, low-risk growth over time", p2e:"T-bills, fixed deposits, bond funds", p2r:"Low–Med",
+    p3n:"High Growth", p3p:"Bigger potential return; you can afford to lose this", p3e:"Stocks, equity funds, high-yield instruments", p3r:"Higher",
+    callout2: "The Sabbatical Fund: A career break is not an accident. It is a decision you fund in advance. Put it in Goal Savings by name. Give it a target amount. Give it a date. That is when it becomes real.",
+    sabLabel: "My sabbatical goal:",
+    sabAmt: "Target amount", sabDate: "Target date",
+    s2footer: "Start with Goal Savings and Stable Growth. Add High Growth when you're ready.",
+    s3title: "KNOW YOUR NUMBERS",
+    s3intro: "You can't manage what you refuse to face. Do this exercise once. Update it quarterly.",
+    incomeLabel: "INCOME", expenseLabel: "EXPENSES",
+    monthlyLabel: "Monthly", annualLabel: "Annual",
+    i1l: "Salary (after tax)", i2l: "Other income (side work, allowances, etc.)",
+    e1l: "Fixed (rent, loan repayments, school fees)",
+    e2l: "Variable (food, transport, data, subscriptions)",
+    e3l: "Discretionary (clothes, eating out, entertainment)",
+    e4l: "Annual surprises (insurance, school levies, travel)",
+    totalIncomeLabel: "TOTAL INCOME", totalExpenseLabel: "TOTAL EXPENSES",
+    surplusLabel: "SURPLUS / GAP", surplusNote: "Income minus Expenses",
+    s3footer: "Annual surprises are not surprises if you plan for them. Divide the annual amount by 12 and add it to your monthly Essentials Third.",
+    callout3: "Starting later? The Three Thirds still works. If you feel you need to catch up, you may want to increase what you allocate to future-you — even if that means trimming the Security Third for a season. The habit of paying yourself first matters more than the percentage. Start where you are.",
+    s4title: "AUTOMATE EVERYTHING",
+    s4intro: "Set up automatic transfers on payday — before you see the money.",
+    a1l:"Payday", a1v:"→ Savings transfer fires automatically",
+    a2l:"Payday", a2v:"→ Investment contribution fires automatically",
+    a3l:"What remains", a3v:"→ That is your spending money. Work within it.",
+    s5title: "THE MINDSET SHIFT",
+    fromLabel: "INSTEAD OF THIS", toLabel: "TRY THIS",
+    m1f:'"I\'ll save what\'s left at the end of the month."', m1t:'"I pay myself first. Savings come out on payday."',
+    m2f:'"I might lose the money."', m2t:'"What if I win? What does that make possible?"',
+    m3f:'"I\'ll wait until I earn more."', m3t:'"I start now with what I have. It compounds."',
+    m4f:'"My partner handles the finances."', m4t:'"I own my financial decisions. Always."',
+    m5f:'"It\'s selfish to prioritize my money."', m5t:'"My financial security is security for everyone around me."',
+    s6title: "BUILD YOUR FINANCIAL CIRCLE",
+    s6intro: "This framework is a solo exercise. But financial growth rarely happens alone.",
+    whoLabel: "WHO", whatLabel: "WHAT THEY GIVE YOU",
+    c1w:"A financial advisor", c1v:"Professional guidance on products, tax, and portfolio structure",
+    c2w:"A trusted peer investor", c2v:"Real-world experience — what is actually working for someone like you",
+    c3w:"An investment club", c3v:"Accountability, shared research, and the habit of regular action",
+    c4w:"A frank friend", c4v:"Permission to ask the questions you are embarrassed to ask elsewhere",
+    footerQuote: "Start where you are. But start.",
+    printBtn: "Save / Print"
+  },
+  fr: {
+    title: "Finance ton futur",
+    subtitle: "Le Cadre Financier",
+    tagline: "Tu n'es pas mauvaise avec l'argent. Tu le protèges.",
+    prompt: "Imagine la version de toi-même dans cinq ans. À quoi ressemble sa vie ? Tout ce qui suit, c'est pour elle.",
+    langBtn: "EN",
+    s1title: "LA RÈGLE DES TROIS TIERS",
+    s1intro: "Dès que l'argent arrive, divise-le en trois parts égales avant de dépenser le moindre centime.",
+    h1: "LE TIERS ESSENTIEL", h2: "LE TIERS DE SÉCURITÉ", h3: "LE TIERS FUTUR",
+    r1c1: "Dépenses courantes", r1c2: "Sécurité et flexibilité", r1c3: "Épargne — ne pas toucher",
+    r2c1: "Transport, nourriture, loyer, factures, abonnements",
+    r2c2: "Cadeaux, imprévus, dépenses occasionnelles, petits plaisirs",
+    r2c3: "C'est toi, demain. Automatise. Oublie. Laisse-le fructifier.",
+    callout1: "L'économie émotionnelle : Le Tiers de Sécurité, c'est aussi là où vivent les coûts invisibles — le sirop pour la toux, le cadeau d'anniversaire, la petite chose que personne n'a demandée mais dont quelqu'un avait besoin. Ces coûts sont réels. Ils ont leur place ici. Y dépenser n'est pas du gaspillage. C'est prendre soin — et le financer correctement.",
+    s1footer: "Vis entièrement sur le Tiers Essentiel. En cas de besoin, utilise le Tiers de Sécurité — jamais le Tiers Futur.",
+    s2title: "RÉPARTIS TON ÉPARGNE EN TROIS PORTEFEUILLES",
+    s2intro: "Le Tiers Futur n'est pas un seul compte. Divise-le en trois selon tes objectifs et ta tolérance au risque.",
+    ph1:"PORTEFEUILLE", ph2:"OBJECTIF", ph3:"EXEMPLES", ph4:"RISQUE",
+    p1n:"Épargne Objectif", p1p:"Quelque chose de précis que tu vises", p1e:"Apport immobilier, fonds sabbatique, voyage, congé", p1r:"Faible",
+    p2n:"Croissance Stable", p2p:"Rendement régulier et peu risqué", p2e:"Bons du Trésor, dépôts à terme, fonds obligataires", p2r:"Faible–Moyen",
+    p3n:"Forte Croissance", p3p:"Rendement potentiel élevé ; tu peux te permettre de perdre cet argent", p3e:"Actions, fonds actions, produits à haut rendement", p3r:"Élevé",
+    callout2: "Le Fonds Sabbatique : Un congé de carrière n'est pas un accident. C'est une décision que tu finances à l'avance. Inscris-le dans l'Épargne Objectif, par son nom. Donne-lui un montant cible. Donne-lui une date. C'est à ce moment-là qu'il devient réel.",
+    sabLabel: "Mon objectif sabbatique :",
+    sabAmt: "Montant cible", sabDate: "Date cible",
+    s2footer: "Commence par l'Épargne Objectif et la Croissance Stable. Ajoute la Forte Croissance quand tu es prête.",
+    s3title: "CONNAIS TES CHIFFRES",
+    s3intro: "On ne gère pas ce qu'on refuse de regarder en face. Fais cet exercice une fois. Mets-le à jour chaque trimestre.",
+    incomeLabel: "REVENUS", expenseLabel: "DÉPENSES",
+    monthlyLabel: "Mensuel", annualLabel: "Annuel",
+    i1l: "Salaire (après impôts)", i2l: "Autres revenus (activité complémentaire, allocations...)",
+    e1l: "Fixes (loyer, remboursements, frais de scolarité)",
+    e2l: "Variables (nourriture, transport, données, abonnements)",
+    e3l: "Discrétionnaires (vêtements, restaurants, loisirs)",
+    e4l: "Dépenses annuelles (assurance, frais scolaires, voyage)",
+    totalIncomeLabel: "TOTAL REVENUS", totalExpenseLabel: "TOTAL DÉPENSES",
+    surplusLabel: "SOLDE / ÉCART", surplusNote: "Revenus moins dépenses",
+    s3footer: "Les dépenses annuelles ne sont pas des surprises si tu les planifies. Divise le montant annuel par 12 et intègre-le à ton Tiers Essentiel mensuel.",
+    callout3: "Tu commences plus tard ? La Règle des Trois Tiers fonctionne quand même. Si tu sens que tu dois rattraper le temps perdu, tu pourrais vouloir augmenter ce que tu alloues à ton futur-toi — même si cela signifie réduire le Tiers de Sécurité pour un temps. L'habitude de te payer en priorité compte plus que le pourcentage. Commence là où tu es.",
+    s4title: "AUTOMATISE TOUT",
+    s4intro: "Mets en place des virements automatiques le jour de paie, avant de voir l'argent.",
+    a1l:"Jour de paie", a1v:"→ Virement épargne se déclenche automatiquement",
+    a2l:"Jour de paie", a2v:"→ Contribution investissement se déclenche automatiquement",
+    a3l:"Ce qui reste", a3v:"→ C'est ton argent de dépenses. Vis avec.",
+    s5title: "LE CHANGEMENT DE MENTALITÉ",
+    fromLabel: "AU LIEU DE ÇA", toLabel: "ESSAIE ÇA",
+    m1f:'"Je mettrai de côté ce qui reste à la fin du mois."', m1t:'"Je me paie en premier. L\'épargne part le jour de paie."',
+    m2f:'"Je pourrais perdre cet argent."', m2t:'"Et si je gagnais ? Qu\'est-ce que ça rendrait possible ?"',
+    m3f:'"J\'attendrai de gagner plus."', m3t:'"Je commence maintenant avec ce que j\'ai. Avec le temps, ça grandit."',
+    m4f:'"Mon partenaire gère les finances."', m4t:'"Je prends mes propres décisions financières. Toujours."',
+    m5f:'"C\'est égoïste de prioriser mon argent."', m5t:'"Ma sécurité financière, c\'est la sécurité de tous autour de moi."',
+    s6title: "CONSTRUIS TON CERCLE FINANCIER",
+    s6intro: "Ce cadre est un exercice individuel. Mais la croissance financière se fait rarement seule.",
+    whoLabel: "QUI", whatLabel: "CE QU'ILS T'APPORTENT",
+    c1w:"Un conseiller financier", c1v:"Accompagnement professionnel sur les produits, la fiscalité et la structure du portefeuille",
+    c2w:"Une personne de confiance qui investit", c2v:"Expérience concrète — ce qui fonctionne vraiment pour quelqu'un comme toi",
+    c3w:"Un club d'investissement", c3v:"Responsabilité, recherche partagée et l'habitude d'agir régulièrement",
+    c4w:"Une amie franche", c4v:"La permission de poser les questions que tu n'oses pas poser ailleurs",
+    footerQuote: "Commence là où tu es. Mais commence.",
+    printBtn: "Enregistrer / Imprimer"
+  }
 };
 
-function SectionHeader({ num, title }) {
-return (
-<div style={{ marginBottom: 12 }}>
-<div style={{ fontFamily: “sans-serif”, fontSize: 10, letterSpacing: 3, color: ACCENT, marginBottom: 4 }}>{num}</div>
-<div style={{ fontFamily: “sans-serif”, fontSize: 11, fontWeight: 700, letterSpacing: 2, color: ACCENT, borderBottom: `1px solid ${RULE}`, paddingBottom: 6 }}>{title}</div>
-</div>
-);
+function set(id, val) { var el = document.getElementById(id); if(el) el.textContent = val; }
+function setPlaceholder(id, val) { var el = document.getElementById(id); if(el) el.placeholder = val; }
+
+function applyLang() {
+  var t = text[lang];
+  set('title', t.title); set('subtitle', t.subtitle); set('tagline', t.tagline);
+  set('prompt', t.prompt); document.getElementById('lang-btn').textContent = t.langBtn;
+  set('s1-title', t.s1title); set('s1-intro', t.s1intro);
+  set('h1', t.h1); set('h2', t.h2); set('h3', t.h3);
+  set('r1c1', t.r1c1); set('r1c2', t.r1c2); set('r1c3', t.r1c3);
+  set('r2c1', t.r2c1); set('r2c2', t.r2c2); set('r2c3', t.r2c3);
+  set('callout1', t.callout1); set('s1-footer', t.s1footer);
+  set('s2-title', t.s2title); set('s2-intro', t.s2intro);
+  set('ph1', t.ph1); set('ph2', t.ph2); set('ph3', t.ph3); set('ph4', t.ph4);
+  set('p1n', t.p1n); set('p1p', t.p1p); set('p1e', t.p1e); set('p1r', t.p1r);
+  set('p2n', t.p2n); set('p2p', t.p2p); set('p2e', t.p2e); set('p2r', t.p2r);
+  set('p3n', t.p3n); set('p3p', t.p3p); set('p3e', t.p3e); set('p3r', t.p3r);
+  set('callout2', t.callout2); set('sab-label', t.sabLabel);
+  setPlaceholder('sab-amt', t.sabAmt); setPlaceholder('sab-date', t.sabDate);
+  set('s2-footer', t.s2footer);
+  set('s3-title', t.s3title); set('s3-intro', t.s3intro);
+  set('income-label', t.incomeLabel); set('expense-label', t.expenseLabel);
+  set('monthly-label', t.monthlyLabel); set('annual-label', t.annualLabel);
+  set('monthly-label2', t.monthlyLabel); set('annual-label2', t.annualLabel);
+  set('i1l', t.i1l); set('i2l', t.i2l);
+  set('e1l', t.e1l); set('e2l', t.e2l); set('e3l', t.e3l); set('e4l', t.e4l);
+  set('total-income-label', t.totalIncomeLabel); set('total-expense-label', t.totalExpenseLabel);
+  set('surplus-label', t.surplusLabel); set('surplus-note', t.surplusNote);
+  set('s3-footer', t.s3footer); set('callout3', t.callout3);
+  set('s4-title', t.s4title); set('s4-intro', t.s4intro);
+  set('a1l', t.a1l); set('a1v', t.a1v);
+  set('a2l', t.a2l); set('a2v', t.a2v);
+  set('a3l', t.a3l); set('a3v', t.a3v);
+  set('s5-title', t.s5title);
+  set('from-label', t.fromLabel); set('to-label', t.toLabel);
+  set('m1f', t.m1f); set('m1t', t.m1t);
+  set('m2f', t.m2f); set('m2t', t.m2t);
+  set('m3f', t.m3f); set('m3t', t.m3t);
+  set('m4f', t.m4f); set('m4t', t.m4t);
+  set('m5f', t.m5f); set('m5t', t.m5t);
+  set('s6-title', t.s6title); set('s6-intro', t.s6intro);
+  set('who-label', t.whoLabel); set('what-label', t.whatLabel);
+  set('c1w', t.c1w); set('c1v', t.c1v);
+  set('c2w', t.c2w); set('c2v', t.c2v);
+  set('c3w', t.c3w); set('c3v', t.c3v);
+  set('c4w', t.c4w); set('c4v', t.c4v);
+  set('footer-quote', t.footerQuote);
+  set('print-btn', t.printBtn);
+  calc();
 }
 
-function Callout({ text }) {
-return (
-<div style={{ borderLeft: `3px solid ${ACCENT}`, backgroundColor: CALLOUT, padding: “12px 16px”, margin: “12px 0”, fontSize: 13, lineHeight: 1.7, color: DARK, fontStyle: “italic” }}>{text}</div>
-);
+function toggleLang() {
+  lang = lang === 'en' ? 'fr' : 'en';
+  applyLang();
 }
 
-function NInput({ value, onChange }) {
-return (
-<input type=“number” value={value} onChange={e => onChange(e.target.value)}
-style={{ width: “100%”, border: `1px solid ${RULE}`, borderRadius: 3, padding: “5px 8px”, fontSize: 13, color: DARK, outline: “none” }} />
-);
+function getVal(id) { return parseFloat(document.getElementById(id).value) || 0; }
+function fmt(n) { return n === 0 ? '' : n.toLocaleString(); }
+function fmtS(n, hasData) {
+  if(!hasData) return '';
+  return (n >= 0 ? '+' : '') + n.toLocaleString();
 }
 
-function TInput({ value, onChange, placeholder }) {
-return (
-<input type=“text” value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}
-style={{ width: “100%”, border: `1px solid ${RULE}`, borderRadius: 3, padding: “5px 8px”, fontSize: 13, color: DARK, outline: “none” }} />
-);
+function calc() {
+  var im = getVal('i1m') + getVal('i2m');
+  var ia = getVal('i1a') + getVal('i2a');
+  var em = getVal('e1m') + getVal('e2m') + getVal('e3m');
+  var ea = getVal('e1a') + getVal('e2a') + getVal('e3a') + getVal('e4a');
+  var sm = im - em;
+  var sa = ia - ea;
+
+  document.getElementById('ti-m').textContent = fmt(im);
+  document.getElementById('ti-a').textContent = fmt(ia);
+  document.getElementById('te-m').textContent = fmt(em);
+  document.getElementById('te-a').textContent = fmt(ea);
+
+  var hasM = im > 0 || em > 0;
+  var hasA = ia > 0 || ea > 0;
+
+  var smEl = document.getElementById('surp-m');
+  smEl.textContent = fmtS(sm, hasM);
+  smEl.className = sm >= 0 ? 'surplus-pos-text' : 'surplus-neg-text';
+
+  var saEl = document.getElementById('surp-a');
+  saEl.textContent = fmtS(sa, hasA);
+  saEl.className = sa >= 0 ? 'surplus-pos-text' : 'surplus-neg-text';
+
+  var row = document.getElementById('surplus-row');
+  if(hasM || hasA) {
+    row.className = (sm >= 0 && sa >= 0) ? 'surplus-pos' : 'surplus-neg';
+  }
 }
 
-function App() {
-const [lang, setLang] = React.useState(“en”);
-const c = content[lang];
-const [income, setIncome] = React.useState([[””,””],[””,””]]);
-const [expenses, setExpenses] = React.useState([[””,””],[””,””],[””,””],[””,””]]);
-const [checked, setChecked] = React.useState([false,false,false,false,false]);
-const [sabAmt, setSabAmt] = React.useState(””);
-const [sabDate, setSabDate] = React.useState(””);
-
-const updI = (r,c2,v) => setIncome(income.map((row,i) => i===r ? row.map((x,j)=>j===c2?v:x) : row));
-const updE = (r,c2,v) => setExpenses(expenses.map((row,i) => i===r ? row.map((x,j)=>j===c2?v:x) : row));
-const totI = (col) => income.reduce((s,r) => s+(parseFloat(r[col])||0), 0);
-const totE = (col) => expenses.reduce((s,r) => s+(parseFloat(r[col])||0), 0);
-const surp = (col) => totI(col) - totE(col);
-const fmt = (n) => n===0 ? “” : n.toLocaleString();
-const fmtS = (n,col) => { if(totI(col)===0&&totE(col)===0) return “”; return (n>=0?”+”:””)+n.toLocaleString(); };
-
-const th = { backgroundColor: DARK, color: “white”, fontFamily: “sans-serif”, fontSize: 11, fontWeight: 700, padding: “8px 10px”, textAlign: “center” };
-const td = { padding: “8px 10px”, fontSize: 13, color: MID, borderBottom: `1px solid ${RULE}`, verticalAlign: “top” };
-
-return (
-<div style={{ fontFamily: “Georgia, serif”, backgroundColor: “#F7F5F2”, minHeight: “100vh” }}>
-
-```
-  {/* HEADER */}
-  <div style={{ backgroundColor: DARK, padding: "24px 28px 20px", borderBottom: `3px solid ${ACCENT}` }}>
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
-      <div>
-        <div style={{ fontFamily: "sans-serif", fontSize: 10, letterSpacing: 3, color: ACCENT, textTransform: "uppercase", marginBottom: 6 }}>The Smile Collective</div>
-        <h1 style={{ fontSize: 24, color: "white", margin: "0 0 4px", fontWeight: "normal", fontStyle: "italic" }}>{c.title}</h1>
-        <div style={{ fontFamily: "sans-serif", fontSize: 12, color: "#A8A8A8" }}>{c.subtitle}</div>
-        <div style={{ fontFamily: "sans-serif", fontSize: 12, color: ACCENT, marginTop: 6, fontStyle: "italic" }}>{c.tagline}</div>
-      </div>
-      <button onClick={() => setLang(lang==="en"?"fr":"en")}
-        style={{ fontFamily: "sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: 1, padding: "6px 14px", backgroundColor: "transparent", border: `1px solid ${ACCENT}`, color: ACCENT, cursor: "pointer", borderRadius: 3, whiteSpace: "nowrap", flexShrink: 0 }}>
-        {c.langBtn}
-      </button>
-    </div>
-  </div>
-
-  {/* PROMPT */}
-  <div style={{ backgroundColor: "#EDEBE7", padding: "14px 28px", borderBottom: `1px solid ${RULE}` }}>
-    <p style={{ margin: 0, fontSize: 14, color: DARK, fontStyle: "italic", lineHeight: 1.6 }}>{c.prompt}</p>
-  </div>
-
-  {/* MAIN CONTENT */}
-  <div style={{ padding: "24px 28px", maxWidth: 760, margin: "0 auto" }}>
-
-    {/* S1 — THIRDS */}
-    <SectionHeader num={c.thirds.num} title={c.thirds.title} />
-    <p style={{ fontSize: 13, color: MID, lineHeight: 1.6, marginBottom: 12 }}>{c.thirds.intro}</p>
-    <div style={{ overflowX: "auto", marginBottom: 4 }}>
-      <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 480 }}>
-        <thead><tr>{c.thirds.headers.map((h,i)=><th key={i} style={{...th, backgroundColor: i===2?"#2A2A2A":ACCENT}}>{h}</th>)}</tr></thead>
-        <tbody>{c.thirds.rows.map((row,i)=><tr key={i}>{row.map((cell,j)=><td key={j} style={{...td, backgroundColor: j===2?LIGHT:i%2===0?"white":"#FAF5F0", color: j===2?DARK:MID}}>{cell}</td>)}</tr>)}</tbody>
-      </table>
-    </div>
-    <Callout text={c.thirds.callout} />
-    <p style={{ fontSize: 12, color: SOFT, fontStyle: "italic", textAlign: "center", marginBottom: 28 }}>{c.thirds.footer}</p>
-
-    {/* S2 — PORTFOLIOS */}
-    <SectionHeader num={c.portfolios.num} title={c.portfolios.title} />
-    <p style={{ fontSize: 13, color: MID, lineHeight: 1.6, marginBottom: 12 }}>{c.portfolios.intro}</p>
-    <div style={{ overflowX: "auto", marginBottom: 4 }}>
-      <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 480 }}>
-        <thead><tr>{c.portfolios.headers.map((h,i)=><th key={i} style={th}>{h}</th>)}</tr></thead>
-        <tbody>{c.portfolios.rows.map((row,i)=><tr key={i}>{row.map((cell,j)=><td key={j} style={{...td, backgroundColor: i%2===0?"white":"#FAF5F0", fontWeight: j===0?700:400, color: j===0?DARK:MID}}>{cell}</td>)}</tr>)}</tbody>
-      </table>
-    </div>
-    <Callout text={c.portfolios.sabbatical} />
-    <div style={{ backgroundColor: LIGHT, border: `1px solid ${RULE}`, borderRadius: 4, padding: "12px 16px", marginBottom: 8 }}>
-      <div style={{ fontFamily: "sans-serif", fontSize: 11, fontWeight: 700, color: ACCENT, marginBottom: 8 }}>{c.portfolios.sabbaticalLabel}</div>
-      <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-        <div style={{ flex: 1, minWidth: 140 }}><TInput value={sabAmt} onChange={setSabAmt} placeholder={c.portfolios.amountPlaceholder} /></div>
-        <div style={{ flex: 1, minWidth: 140 }}><TInput value={sabDate} onChange={setSabDate} placeholder={c.portfolios.datePlaceholder} /></div>
-      </div>
-    </div>
-    <p style={{ fontSize: 12, color: SOFT, fontStyle: "italic", textAlign: "center", marginBottom: 28 }}>{c.portfolios.footer}</p>
-
-    {/* S3 — NUMBERS */}
-    <SectionHeader num={c.numbers.num} title={c.numbers.title} />
-    <p style={{ fontSize: 13, color: MID, lineHeight: 1.6, marginBottom: 12 }}>{c.numbers.intro}</p>
-    <div style={{ overflowX: "auto" }}>
-      <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 400, marginBottom: 8 }}>
-        <thead><tr>
-          <th style={{...th, backgroundColor: ACCENT, textAlign: "left", width: "50%"}}>{c.numbers.incomeLabel}</th>
-          <th style={{...th, backgroundColor: ACCENT}}>{c.numbers.monthly}</th>
-          <th style={{...th, backgroundColor: ACCENT}}>{c.numbers.annual}</th>
-        </tr></thead>
-        <tbody>
-          {c.numbers.incomeFields.map((label,i)=>(
-            <tr key={i} style={{backgroundColor: i%2===0?"white":"#FAF5F0"}}>
-              <td style={{...td, fontSize: 12}}>{label}</td>
-              <td style={{...td, width:"22%"}}><NInput value={income[i][0]} onChange={v=>updI(i,0,v)} /></td>
-              <td style={{...td, width:"22%"}}><NInput value={income[i][1]} onChange={v=>updI(i,1,v)} /></td>
-            </tr>
-          ))}
-          <tr style={{backgroundColor:"#F0EBE5"}}>
-            <td style={{...td, fontWeight:700, color:DARK, fontSize:12}}>TOTAL {c.numbers.incomeLabel}</td>
-            <td style={{...td, fontWeight:700, color:DARK, textAlign:"center"}}>{fmt(totI(0))}</td>
-            <td style={{...td, fontWeight:700, color:DARK, textAlign:"center"}}>{fmt(totI(1))}</td>
-          </tr>
-        </tbody>
-      </table>
-      <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 400, marginBottom: 8 }}>
-        <thead><tr>
-          <th style={{...th, backgroundColor: ACCENT, textAlign: "left", width: "50%"}}>{c.numbers.expenseLabel}</th>
-          <th style={{...th, backgroundColor: ACCENT}}>{c.numbers.monthly}</th>
-          <th style={{...th, backgroundColor: ACCENT}}>{c.numbers.annual}</th>
-        </tr></thead>
-        <tbody>
-          {c.numbers.expenseFields.map((field,i)=>(
-            <tr key={i} style={{backgroundColor: i%2===0?"white":"#FAF5F0"}}>
-              <td style={{...td, fontSize: 12}}>{field.label}</td>
-              <td style={{...td, width:"22%"}}>{field.annualOnly ? <div style={{textAlign:"center",color:SOFT}}>—</div> : <NInput value={expenses[i][0]} onChange={v=>updE(i,0,v)} />}</td>
-              <td style={{...td, width:"22%"}}><NInput value={expenses[i][1]} onChange={v=>updE(i,1,v)} /></td>
-            </tr>
-          ))}
-          <tr style={{backgroundColor:"#F0EBE5"}}>
-            <td style={{...td, fontWeight:700, color:DARK, fontSize:12}}>TOTAL {c.numbers.expenseLabel}</td>
-            <td style={{...td, fontWeight:700, color:DARK, textAlign:"center"}}>{fmt(totE(0))}</td>
-            <td style={{...td, fontWeight:700, color:DARK, textAlign:"center"}}>{fmt(totE(1))}</td>
-          </tr>
-          <tr style={{backgroundColor: surp(0)>=0?"#F0F5F2":"#FFF0F0"}}>
-            <td style={{...td, fontWeight:700, color:DARK, fontSize:12}}>
-              {c.numbers.surplusLabel}
-              <div style={{fontWeight:400, fontSize:11, color:SOFT}}>{c.numbers.surplusNote}</div>
-            </td>
-            <td style={{...td, fontWeight:700, textAlign:"center", color: surp(0)>=0?GREEN:"#C0392B", fontSize:15}}>{fmtS(surp(0),0)}</td>
-            <td style={{...td, fontWeight:700, textAlign:"center", color: surp(1)>=0?GREEN:"#C0392B", fontSize:15}}>{fmtS(surp(1),1)}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <p style={{ fontSize: 12, color: SOFT, fontStyle: "italic", textAlign: "center", margin: "8px 0" }}>{c.numbers.footer}</p>
-    <Callout text={c.numbers.lateStarter} />
-    <div style={{ marginBottom: 28 }} />
-
-    {/* S4 — AUTOMATE */}
-    <SectionHeader num={c.automate.num} title={c.automate.title} />
-    <p style={{ fontSize: 13, color: MID, lineHeight: 1.6, marginBottom: 12 }}>{c.automate.intro}</p>
-    <div style={{ backgroundColor: LIGHT, border: `1px solid ${RULE}`, borderRadius: 4, overflow: "hidden", marginBottom: 28 }}>
-      {c.automate.rows.map((row,i)=>(
-        <div key={i} style={{ display:"flex", gap:16, padding:"10px 16px", borderBottom: i<c.automate.rows.length-1?`1px solid ${RULE}`:"none", backgroundColor: i%2===0?"white":LIGHT }}>
-          <div style={{ fontFamily:"sans-serif", fontSize:12, fontWeight:700, color:DARK, minWidth:110 }}>{row[0]}</div>
-          <div style={{ fontSize:13, color:MID }}>{row[1]}</div>
-        </div>
-      ))}
-    </div>
-
-    {/* S5 — MINDSET */}
-    <SectionHeader num={c.mindset.num} title={c.mindset.title} />
-    <div style={{ border:`1px solid ${RULE}`, borderRadius:4, overflow:"hidden", marginBottom:28 }}>
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 40px" }}>
-        <div style={{...th, padding:"8px 12px", textAlign:"left"}}>{c.mindset.fromLabel}</div>
-        <div style={{...th, padding:"8px 12px", textAlign:"left"}}>{c.mindset.toLabel}</div>
-        <div style={{...th, padding:"8px 12px"}}>✓</div>
-        {c.mindset.rows.map((row,i)=>(
-          <React.Fragment key={i}>
-            <div style={{ padding:"10px 12px", fontSize:12, color:SOFT, backgroundColor:i%2===0?"white":"#FAF5F0", borderTop:`1px solid ${RULE}`, fontStyle:"italic", lineHeight:1.5 }}>{row.from}</div>
-            <div style={{ padding:"10px 12px", fontSize:12, color:GREEN, fontWeight:700, backgroundColor:i%2===0?"white":"#FAF5F0", borderTop:`1px solid ${RULE}`, lineHeight:1.5 }}>{row.to}</div>
-            <div style={{ padding:"10px 12px", backgroundColor:i%2===0?"white":"#FAF5F0", borderTop:`1px solid ${RULE}`, display:"flex", alignItems:"center", justifyContent:"center" }}>
-              <input type="checkbox" checked={checked[i]} onChange={()=>setChecked(checked.map((v,j)=>j===i?!v:v))} style={{ width:16, height:16, accentColor:ACCENT, cursor:"pointer" }} />
-            </div>
-          </React.Fragment>
-        ))}
-      </div>
-    </div>
-
-    {/* S6 — CIRCLE */}
-    <SectionHeader num={c.circle.num} title={c.circle.title} />
-    <p style={{ fontSize:13, color:MID, lineHeight:1.6, marginBottom:12 }}>{c.circle.intro}</p>
-    <div style={{ border:`1px solid ${RULE}`, borderRadius:4, overflow:"hidden", marginBottom:32 }}>
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 2fr" }}>
-        <div style={{...th, padding:"8px 12px", textAlign:"left"}}>{c.circle.whoLabel}</div>
-        <div style={{...th, padding:"8px 12px", textAlign:"left"}}>{c.circle.whatLabel}</div>
-        {c.circle.rows.map((row,i)=>(
-          <React.Fragment key={i}>
-            <div style={{ padding:"10px 12px", fontSize:12, fontWeight:700, color:DARK, backgroundColor:i%2===0?"white":"#FAF5F0", borderTop:`1px solid ${RULE}` }}>{row.who}</div>
-            <div style={{ padding:"10px 12px", fontSize:12, color:MID, backgroundColor:i%2===0?"white":"#FAF5F0", borderTop:`1px solid ${RULE}` }}>{row.what}</div>
-          </React.Fragment>
-        ))}
-      </div>
-    </div>
-
-    {/* FOOTER */}
-    <div style={{ borderTop:`1px solid ${RULE}`, paddingTop:16, marginBottom:20, textAlign:"center" }}>
-      <p style={{ fontSize:15, fontStyle:"italic", color:DARK, margin:"0 0 8px" }}>{c.footer}</p>
-      <p style={{ fontFamily:"sans-serif", fontSize:11, color:SOFT, margin:0 }}>{c.credit}</p>
-    </div>
-
-    {/* PRINT BUTTON */}
-    <div style={{ textAlign:"center", marginBottom:40 }}>
-      <button onClick={()=>window.print()}
-        style={{ fontFamily:"sans-serif", fontSize:13, fontWeight:700, letterSpacing:1, padding:"12px 32px", backgroundColor:ACCENT, border:"none", color:"white", cursor:"pointer", borderRadius:3 }}>
-        {c.printBtn}
-      </button>
-    </div>
-
-  </div>
-</div>
-```
-
-);
-}
-
-ReactDOM.render(React.createElement(App), document.getElementById(‘root’));
+applyLang();
 </script>
 
 </body>
