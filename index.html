@@ -204,6 +204,7 @@ body { background: white; }
       </tbody>
     </table>
   </div>
+  <div id="surplus-advice" style="display:none; border-radius:4px; padding:12px 16px; margin:8px 0 4px; font-size:13px; line-height:1.6; font-style:italic;"></div>
   <div class="footer-note" id="s3-footer">Annual surprises are not surprises if you plan for them. Divide the annual amount by 12 and add it to your monthly Essentials Third.</div>
   <div class="callout" id="callout3">Starting later? The Three Thirds still works. If you feel you need to catch up, you may want to increase what you allocate to future-you — even if that means trimming the Security Third for a season. The habit of paying yourself first matters more than the percentage. Start where you are.</div>
   <div style="margin-bottom:28px;"></div>
@@ -324,7 +325,10 @@ var text = {
     c3w:"An investment club", c3v:"Accountability, shared research, and the habit of regular action",
     c4w:"A frank friend", c4v:"Permission to ask the questions you are embarrassed to ask elsewhere",
     footerQuote: "Start where you are. But start.",
-    printBtn: "Save / Print"
+    printBtn: "Save / Print",
+    adviceSurplus: "You have room. Move this surplus into your Future Third before you find a reason to spend it.",
+    adviceBreakeven: "You're at zero. Find one expense to reduce and redirect it to your Future Third.",
+    adviceGap: "Your expenses exceed your income. Cut one thing or find one new income source. Both are valid."
   },
   fr: {
     title: "Finance ton futur",
@@ -384,7 +388,10 @@ var text = {
     c3w:"Un club d'investissement", c3v:"Responsabilité, recherche partagée et l'habitude d'agir régulièrement",
     c4w:"Une amie franche", c4v:"La permission de poser les questions que tu n'oses pas poser ailleurs",
     footerQuote: "Commence là où tu es. Mais commence.",
-    printBtn: "Enregistrer / Imprimer"
+    printBtn: "Enregistrer / Imprimer",
+    adviceSurplus: "Tu as de la marge. Transfère cet excédent dans ton Tiers Futur avant de trouver une raison de le dépenser.",
+    adviceBreakeven: "Tu es à zéro. Trouve une dépense à réduire et redirige-la vers ton Tiers Futur.",
+    adviceGap: "Tes dépenses dépassent tes revenus. Coupe une dépense ou trouve une nouvelle source de revenus. Les deux sont valables."
   }
 };
 
@@ -452,10 +459,27 @@ function fmtS(n, hasData) {
 }
 
 function calc() {
-  var im = getVal('i1m') + getVal('i2m');
-  var ia = getVal('i1a') + getVal('i2a');
-  var em = getVal('e1m') + getVal('e2m') + getVal('e3m');
-  var ea = getVal('e1a') + getVal('e2a') + getVal('e3a') + getVal('e4a');
+  var i1m = getVal('i1m'); var i2m = getVal('i2m');
+  var i1a = getVal('i1a'); var i2a = getVal('i2a');
+  var e1m = getVal('e1m'); var e2m = getVal('e2m'); var e3m = getVal('e3m');
+  var e1a = getVal('e1a'); var e2a = getVal('e2a'); var e3a = getVal('e3a'); var e4a = getVal('e4a');
+
+  // Auto-annualise: if monthly entered but annual empty, populate annual x12
+  function autoAnnual(mId, aId, mVal) {
+    var aEl = document.getElementById(aId);
+    if(mVal > 0 && aEl.value === '') { aEl.value = mVal * 12; }
+  }
+  autoAnnual('i1m','i1a',i1m); autoAnnual('i2m','i2a',i2m);
+  autoAnnual('e1m','e1a',e1m); autoAnnual('e2m','e2a',e2m); autoAnnual('e3m','e3a',e3m);
+
+  // Recalculate after potential auto-fill
+  i1a = getVal('i1a'); i2a = getVal('i2a');
+  e1a = getVal('e1a'); e2a = getVal('e2a'); e3a = getVal('e3a');
+
+  var im = i1m + i2m;
+  var ia = i1a + i2a;
+  var em = e1m + e2m + e3m;
+  var ea = e1a + e2a + e3a + e4a;
   var sm = im - em;
   var sa = ia - ea;
 
@@ -478,6 +502,32 @@ function calc() {
   var row = document.getElementById('surplus-row');
   if(hasM || hasA) {
     row.className = (sm >= 0 && sa >= 0) ? 'surplus-pos' : 'surplus-neg';
+  }
+
+  // Surplus advice
+  var adviceEl = document.getElementById('surplus-advice');
+  var t = text[lang];
+  if(hasM || hasA) {
+    adviceEl.style.display = 'block';
+    var surplus = hasA ? sa : sm;
+    if(surplus > 0) {
+      adviceEl.style.background = '#F0F5F2';
+      adviceEl.style.borderLeft = '3px solid #2A5C3F';
+      adviceEl.style.color = '#2A5C3F';
+      adviceEl.textContent = t.adviceSurplus;
+    } else if(surplus === 0) {
+      adviceEl.style.background = '#FDF8F4';
+      adviceEl.style.borderLeft = '3px solid #C8956C';
+      adviceEl.style.color = '#444';
+      adviceEl.textContent = t.adviceBreakeven;
+    } else {
+      adviceEl.style.background = '#FFF0F0';
+      adviceEl.style.borderLeft = '3px solid #C0392B';
+      adviceEl.style.color = '#C0392B';
+      adviceEl.textContent = t.adviceGap;
+    }
+  } else {
+    adviceEl.style.display = 'none';
   }
 }
 
