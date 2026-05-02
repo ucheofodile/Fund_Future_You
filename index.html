@@ -467,7 +467,7 @@ function calc() {
   // Auto-annualise: if monthly entered but annual empty, populate annual x12
   function autoAnnual(mId, aId, mVal) {
     var aEl = document.getElementById(aId);
-    if(mVal > 0 && aEl.value === '') { aEl.value = mVal * 12; }
+    if(mVal > 0 && aEl.value === '') { aEl.value = (mVal * 12).toString(); }
   }
   autoAnnual('i1m','i1a',i1m); autoAnnual('i2m','i2a',i2m);
   autoAnnual('e1m','e1a',e1m); autoAnnual('e2m','e2a',e2m); autoAnnual('e3m','e3a',e3m);
@@ -504,12 +504,12 @@ function calc() {
     row.className = (sm >= 0 && sa >= 0) ? 'surplus-pos' : 'surplus-neg';
   }
 
-  // Surplus advice
+  // Surplus advice — use monthly as primary signal, fall back to annual
   var adviceEl = document.getElementById('surplus-advice');
   var t = text[lang];
   if(hasM || hasA) {
     adviceEl.style.display = 'block';
-    var surplus = hasA ? sa : sm;
+    var surplus = hasM ? sm : sa;
     if(surplus > 0) {
       adviceEl.style.background = '#F0F5F2';
       adviceEl.style.borderLeft = '3px solid #2A5C3F';
