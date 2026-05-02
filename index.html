@@ -461,9 +461,11 @@ function fmtS(n, hasData) {
 function annualise(mId, aId) {
   var mVal = getVal(mId);
   var aEl = document.getElementById(aId);
-  if(mVal > 0 && aEl.value === '') {
+  if(mVal > 0) {
     aEl.value = (mVal * 12).toString();
     calc();
+  } else if(mVal === 0 && aEl.value !== '') {
+    // leave annual alone if monthly is cleared
   }
 }
 
